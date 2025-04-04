@@ -1,19 +1,16 @@
-# Step 1: Build the React app
-FROM node:20 AS builder
-
+# ใช้ Node.js เพื่อติดตั้งและ Build React
+FROM node:18 AS builder
 WORKDIR /app
-
 COPY package.json package-lock.json ./
 RUN npm install
-
-COPY . . 
+COPY . .
 RUN npm run build
 
-# Step 2: Serve the built app with Nginx
-FROM nginx:alpine
+# ตรวจสอบว่าไฟล์ถูกสร้างจริง
+RUN ls -la /app/dist
 
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
+# ใช้ Nginx เพื่อเสิร์ฟไฟล์ Static
+FROM nginx:latest
+WORKDIR /usr/share/nginx/html
+COPY --from=builder /app/dist .
 CMD ["nginx", "-g", "daemon off;"]
