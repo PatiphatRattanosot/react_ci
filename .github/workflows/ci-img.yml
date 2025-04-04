@@ -19,7 +19,7 @@ jobs:
         run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Verify extracted tag
-        run: echo "Using TAG_NAME=${{ env.TAG_NAME }}"
+        run: echo "Using TAG_NAME=${{ env.TAG_NAME }}" # ตรวจสอบว่า TAG_NAME ถูกต้อง
 
       - name: Build and push Docker image
         uses: mr-smithers-excellent/docker-build-push@v6
@@ -28,4 +28,4 @@ jobs:
           registry: ghcr.io/patiphatrattanosot
           username: patiphatrattanosot
           password: ${{ secrets.GITHUB_TOKEN }}
-          tags: ${{ env.TAG_NAME }}
+          tags: ${{ env.TAG_NAME }} # ตรวจสอบว่า Tags ถูกต้อง เช่น 1.0.3
